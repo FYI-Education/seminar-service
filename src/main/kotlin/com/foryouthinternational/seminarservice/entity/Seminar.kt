@@ -12,4 +12,6 @@ class Seminar(
     val title: String,
     val description: String,
 
+    @OneToMany(mappedBy = "seminar", cascade = [CascadeType.ALL])
+    val participants: List<Participant> = mutableListOf()
 ) : BaseEntity()
