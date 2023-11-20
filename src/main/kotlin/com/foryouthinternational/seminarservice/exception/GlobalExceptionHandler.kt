@@ -20,7 +20,8 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleGeneralExceptions(ex: Exception): ResponseEntity<ApiResponse<Any>> {
-        val apiResponse = ApiResponseBuilder.buildError<Any>(ErrorMessages.GENERAL_ERROR, ex.message)
+        logger.error(ErrorMessages.GENERAL_ERROR, ex)
+        val apiResponse = ApiResponseBuilder.buildError<Any>(ErrorMessages.GENERAL_ERROR)
         return ResponseEntity.internalServerError().body(apiResponse)
     }
 
