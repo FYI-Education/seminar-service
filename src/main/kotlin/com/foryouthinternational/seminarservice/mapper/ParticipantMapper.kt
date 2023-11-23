@@ -14,7 +14,15 @@ class ParticipantMapper(private val seminarService: SeminarService) : GenericMap
             name = dto.name,
             email = dto.email,
             seminar = seminar,
-            phoneNumber = dto.phoneNumber
+            phoneNumber = dto.phoneNumber,
+            address = dto.address,
+            companyName = dto.companyName,
+            businessCategoryOwned = dto.businessCategoryOwned,
+            exportExperience = dto.exportExperience,
+            productOwned = dto.productOwned,
+            reason = dto.reason,
+            resources = dto.resources
+
         )
     }
 

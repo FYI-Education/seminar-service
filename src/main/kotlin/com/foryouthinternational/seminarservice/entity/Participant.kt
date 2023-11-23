@@ -13,6 +13,13 @@ class Participant(
     val name: String,
     val email: String,
     val phoneNumber: String,
+    val address: String,
+    val companyName: String,
+    val businessCategoryOwned: String,
+    val productOwned: String,
+    val exportExperience: Boolean,
+    val reason: String,
+    val resources: String,
 
     @ManyToOne
     @JoinColumn(name = "seminar_id")
