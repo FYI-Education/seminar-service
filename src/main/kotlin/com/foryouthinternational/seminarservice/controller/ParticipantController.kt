@@ -4,12 +4,13 @@ import com.foryouthinternational.seminarservice.dto.ApiResponse
 import com.foryouthinternational.seminarservice.dto.ParticipantDto
 import com.foryouthinternational.seminarservice.entity.Participant
 import com.foryouthinternational.seminarservice.service.ParticipantService
-import com.foryouthinternational.seminarservice.service.ParticipantServiceImpl
 import com.foryouthinternational.seminarservice.util.ApiResponseBuilder
 import com.foryouthinternational.seminarservice.util.AppConstants
 import com.foryouthinternational.seminarservice.util.SuccessMessages
 import jakarta.validation.Valid
-import org.springframework.beans.factory.annotation.Autowired
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,10 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/participants")
 class ParticipantController(private val participantService: ParticipantService) {
 
-    @Autowired
-    private lateinit var participantServiceImpl: ParticipantServiceImpl
-
-
+    @OptIn(DelicateCoroutinesApi::class)
     @PostMapping
     fun registerParticipant(@RequestBody @Valid participantDto: ParticipantDto): ResponseEntity<ApiResponse<Participant>> {
         val createdParticipant = participantService.save(participantDto)
@@ -36,7 +34,10 @@ class ParticipantController(private val participantService: ParticipantService) 
             ),
             data = createdParticipant
         )
-        participantServiceImpl.sendNotifRegistry(participantDto)
+        // Fire and forget
+        GlobalScope.launch {
+            participantService.sendNotifRegistry(participantDto)
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse)
     }
 }
